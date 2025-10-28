@@ -78,7 +78,7 @@ const loginUser = async (req, res) => {
         );
 
         res.status(200).json({
-TA         _id: user._id,
+            _id: user._id,
             name: user.name,
             mobileNumber: user.mobileNumber,
             role: user.role,
@@ -103,3 +103,4 @@ module.exports = {
     loginUser,
     logoutUser
 };
+
