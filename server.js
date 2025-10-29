@@ -42,8 +42,8 @@ const io = new Server(server, {
 const allowedOrigins = [
     // This uses the environment variable, or the default if the variable is not set.
     process.env.FRONTEND_URL,
-    'https://aaisahebvastram.com',
-    'https://www.aaisahebvastram.com', // FIX: Explicitly added the 'www' domain which was failing.
+    'https://dashing-biscuit-7521a2.netlify.app',
+    'https://dashing-biscuit-7521a2.netlify.app', // FIX: Explicitly added the 'www' domain which was failing.
     'http://localhost:3000',
 ].filter(Boolean); // .filter(Boolean) removes any null or undefined entries safely
 
