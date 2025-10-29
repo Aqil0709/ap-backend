@@ -29,9 +29,9 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-        process.env.FRONTEND_URL || 'https://aaisahebvastram.com',
+        process.env.FRONTEND_URL || 'https://dashing-biscuit-7521a2.netlify.app',
         'http://localhost:3000',
-        'https://www.aaisahebvastram.com' // Added www version for Socket.IO
+        'https://dashing-biscuit-7521a2.netlify.app/' // Added www version for Socket.IO
     ],
     methods: ["GET", "POST"]
   }
