@@ -29,8 +29,9 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-        process.env.FRONTEND_URL || 
-        'http://localhost:3000' // Added www version for Socket.IO
+        process.env.FRONTEND_URL || 'https://appageneralstore.netlify.app/',
+        'http://localhost:3000',
+        'https://appageneralstore.netlify.app/' // Added www version for Socket.IO
     ],
     methods: ["GET", "POST"]
   }
