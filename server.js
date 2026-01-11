@@ -42,7 +42,8 @@ const io = new Server(server, {
 const allowedOrigins = [
     // This uses the environment variable, or the default if the variable is not set.
     process.env.FRONTEND_URL,
-    // FIX: Explicitly added the 'www' domain which was failing.
+    'https://appageneralstore.netlify.app/',
+    'https://appageneralstore.netlify.app/', // FIX: Explicitly added the 'www' domain which was failing.
     'http://localhost:3000',
 ].filter(Boolean); // .filter(Boolean) removes any null or undefined entries safely
 
