@@ -29,9 +29,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-        process.env.FRONTEND_URL || 'https://appapanshop.netlify.app',
-        'http://localhost:3000',
-        'https://appapanshop.netlify.app' // Added www version for Socket.IO
+        process.env.FRONTEND_URL || 
+        'http://localhost:3000' // Added www version for Socket.IO
     ],
     methods: ["GET", "POST"]
   }
@@ -42,8 +41,7 @@ const io = new Server(server, {
 const allowedOrigins = [
     // This uses the environment variable, or the default if the variable is not set.
     process.env.FRONTEND_URL,
-    'https://appapanshop.netlify.app',
-    'https://appapanshop.netlify.app', // FIX: Explicitly added the 'www' domain which was failing.
+    // FIX: Explicitly added the 'www' domain which was failing.
     'http://localhost:3000',
 ].filter(Boolean); // .filter(Boolean) removes any null or undefined entries safely
 
@@ -131,6 +129,7 @@ io.on('connection', (socket) => {
 
 // --- Fallback and Error Handler ---
 app.use((req, res, next) => {
+    
     res.status(404).json({ message: 'API Route not found' });
 });
 app.use((err, req, res, next) => {
