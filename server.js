@@ -29,9 +29,9 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: [
-        process.env.FRONTEND_URL || 'https://appageneralstore.netlify.app/',
+        process.env.FRONTEND_URL || 'https://appageneralstore.netlify.app',
         'http://localhost:3000',
-        'https://appageneralstore.netlify.app/' // Added www version for Socket.IO
+        'https://appageneralstore.netlify.app' // Added www version for Socket.IO
     ],
     methods: ["GET", "POST"]
   }
@@ -42,8 +42,8 @@ const io = new Server(server, {
 const allowedOrigins = [
     // This uses the environment variable, or the default if the variable is not set.
     process.env.FRONTEND_URL,
-    'https://appageneralstore.netlify.app/',
-    'https://appageneralstore.netlify.app/', // FIX: Explicitly added the 'www' domain which was failing.
+    'https://appageneralstore.netlify.app',
+    'http://appageneralstore.netlify.app', // FIX: Explicitly added the 'www' domain which was failing.
     'http://localhost:3000',
 ].filter(Boolean); // .filter(Boolean) removes any null or undefined entries safely
 
