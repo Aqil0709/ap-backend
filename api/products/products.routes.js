@@ -20,6 +20,8 @@ router.get('/:productId', getProductById);
 router.get('/:productId/reviews', getProductReviews);
 
 // Admin Routes
+router.post('/add-bulk', authenticate, authorizeAdmin, upload.single('csvFile'), addBulkProducts);
+
 router.post('/add', authenticate, authorizeAdmin, upload.array('images', 15), addProduct);
 router.put('/update/:productId', authenticate, authorizeAdmin, upload.array('images', 15), updateProduct);
 router.delete('/delete/:productId', authenticate, authorizeAdmin, deleteProduct);
