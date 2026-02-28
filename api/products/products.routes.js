@@ -9,7 +9,8 @@ const {
     updateProductStock,
     createProductReview,
     getProductReviews,
-    updateProductStatus
+    updateProductStatus,
+    addBulkProducts
 } = require('./products.controller');
 const { authenticate, authorizeAdmin } = require('../middleware/auth.middleware');
 const upload = require('../middleware/upload.middleware');
