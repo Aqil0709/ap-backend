@@ -304,6 +304,74 @@ const updateProductStatus = async (req, res) => {
   }
 };
 
+// --- BULK UPLOAD (EXCEL/CSV) ---
+const addBulkProducts = async (req, res) => {
+  try {
+    // Check if file is uploaded (multer should be used in routes like upload.single('csvFile'))
+    const file = req.file || (req.files && req.files.length > 0 ? req.files[0] : null);
+    
+    if (!file) {
+      return res.status(400).json({ message: 'Please upload an Excel or CSV file.' });
+    }
+
+    const filePath = file.path;
+    
+    // Read the file using xlsx library
+    const workbook = xlsx.readFile(filePath);
+    const sheetName = workbook.SheetNames[0]; // Get the first sheet
+    const worksheet = workbook.Sheets[sheetName];
+    
+    // Convert sheet to JSON array
+    const productsData = xlsx.utils.sheet_to_json(worksheet);
+
+    if (productsData.length === 0) {
+      deleteLocalFile(filePath);
+      return res.status(400).json({ message: 'The uploaded file is empty.' });
+    }
+
+    const validProducts = [];
+
+    // Map the excel data to our Mongoose model
+    for (const row of productsData) {
+      // Basic validation: skip rows that don't have required fields
+      if (!row.name || !row.category || !row.price || !row.description || row.quantity === undefined) {
+        continue; 
+      }
+
+      validProducts.push({
+        name: row.name,
+        category: row.category,
+        price: Number(row.price),
+        originalPrice: row.originalPrice ? Number(row.originalPrice) : undefined,
+        description: row.description,
+        quantity: Number(row.quantity),
+        isSpecial: String(row.isSpecial).toLowerCase() === 'true',
+        isTrending: String(row.isTrending).toLowerCase() === 'true',
+        images: [] // You can handle image URLs here if needed, keeping it empty by default
+      });
+    }
+
+    if (validProducts.length === 0) {
+      deleteLocalFile(filePath);
+      return res.status(400).json({ message: 'No valid product data found. Check your column headers.' });
+    }
+
+    // Insert all valid products into DB
+    await Product.insertMany(validProducts);
+    
+    // Clean up temp file
+    deleteLocalFile(filePath);
+
+    res.status(201).json({ message: `${validProducts.length} products successfully uploaded!`, count: validProducts.length });
+
+  } catch (error) {
+    console.error('Bulk upload error:', error);
+    const file = req.file || (req.files && req.files[0]);
+    if (file) deleteLocalFile(file.path);
+    res.status(500).json({ message: 'Server error while processing Excel file.' });
+  }
+};
+
 module.exports = {
   getAllProducts,
   getProductById,
@@ -314,5 +382,6 @@ module.exports = {
   createProductReview,
   getProductReviews,
   updateProductStatus,
+addBulkProducts
 };
 
